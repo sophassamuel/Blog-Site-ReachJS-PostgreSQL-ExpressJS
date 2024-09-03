@@ -1,0 +1,45 @@
+# Node modules
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment variables
+.env
+
+# Build output
+build/
+dist/
+
+# IDE or Editor specific files
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+
+# Temporary files
+tmp/
+temp/
+
+# Yarn & NPM lock files (if using yarn)
+yarn.lock
+package-lock.json
+config.json
+
+# Postgres data (if using Docker or local PostgreSQL)
+pgdata/
+
+# Sequelize migration files (if using Docker or local PostgreSQL)
+.sequelize/
+
+# Other sensitive files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
