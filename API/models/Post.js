@@ -1,34 +1,36 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database'); // Adjust the path if necessary
+const sequelize = require('../config/connections');
 
 const Post = sequelize.define('Post', {
-  author: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
   title: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: false
   },
   summary: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false
   },
   content: {
     type: DataTypes.TEXT,
-    allowNull: true,
+    allowNull: false
   },
   category: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false
+  },
+  author: {
+    type: DataTypes.STRING,
+    allowNull: false
   },
   cover: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: true
   },
-}, {
-  timestamps: true,
-  tableName: 'Post', // Explicitly specify the exact table name
-});
+},
+  {
+    timestamps: true,
+    tableName: 'Post', // Explicitly specify the exact table name
+  });
+
 
 module.exports = Post;

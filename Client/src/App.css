@@ -11,6 +11,8 @@
   --text-color: #212529;      /* Example: Default text color (dark gray) */
   --link-color: #007bff;      /* Example: Link color (blue) */
   --lightest-colour: #b5b3b3;
+  --body-fonts: "Helvetica", sans-serif;
+
 }
 
 main {
@@ -100,49 +102,56 @@ input {
   background-color: var(--background-color);
   border-radius: 5px;
 }
-div.Main-Div{
-  display: grid;
-  grid-template-rows: 1fr 0.5fr;
-  gap: 10px;
+div.Main-Div {
+  display: block; /* Keep block layout for Main-Div */
   margin-bottom: 30px;
 }
-div.post-image{
+
+div.Main-Div .post-image {
+  margin-bottom: 10px; /* Reduce space between image and text */
+  display: flex;
+  justify-content: center; /* Center the image horizontally */
+}
+
+div.Main-Div .post-image img {
   max-width: 100%;
-
+  height: auto;
+  object-fit: cover; /* Ensure the image covers the container */
 }
-div.info {
-  font-size: 48px;
-  font-weight: bold;
+
+div.Main-Div .text {
+  display: flex;
+  font-family: var(--body-fonts);
+  flex-direction: column;
+  gap: 5px; /* Reduce gap within text block */
+}
+
+div.Main-Div .text .info {
   text-align: center;
-  display: block;
+  font-family: var(--body-fonts);
+  font-size: 0.9rem; /* Smaller font size for author and time */
+  color: var(--secondary-color); /* Grey color for author and time */
 }
 
-div.info h2,
-div.info h4,
-div.info time.time {
-  margin: 0;
-  padding: 0;
-  line-height: 1;
+div.Main-Div .text h2 {
+  font-size: 3rem;
+  font-family: var(--body-fonts);
+  font-weight: bold; /* Bold title */
+  color: var(--primary-color);
 }
 
-div.info h2 {
-  font-size: 1em;
-  margin-bottom: 10px;
-  margin-top: 10px;
+div.Main-Div .text p.summary {
+  margin: 10px 0;
+  line-height: 1.8rem;
+  font-size: 1rem; /* Normal text size for summary */
 }
 
-div.info h4 {
-  color: var(--secondary-color);
-  margin-bottom: 10px;
-  font-size: 0.5em;
+/* Ensure responsiveness for smaller screens */
+@media (max-width: 768px) {
+  div.Main-Div {
+    /* Adjustments for small screens if needed */
+  }
 }
-
-div.info time.time {
-  color: var(--secondary-color);
-  font-size: 0.3em;
-  display: block;
-}
-
 
 
 

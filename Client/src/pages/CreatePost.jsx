@@ -1,7 +1,9 @@
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
+import axios from 'axios';
 
 const modules = {
   toolbar: [
@@ -21,96 +23,137 @@ const formats = [
 ];
 
 export default function CreatePost() {
+  const navigate = useNavigate();
   const [author, setAuthor] = useState('');
   const [title, setTitle] = useState('');
   const [summary, setSummary] = useState('');
   const [category, setCategory] = useState('');
   const [content, setContent] = useState('');
-  const [file, setFile] = useState(null); // Changed to null for better file handling
-  const [video, setVideo] = useState(''); // Ensure this is used correctly based on your needs
+  const [file, setFile] = useState(null);
   const [redirect, setRedirect] = useState(false);
+  const [fieldError, setFieldError] = useState('');
+  const [fileError, setFileError] = useState('');
 
-  async function createNewPost(ev) {
+  const createNewPost = async (ev) => {
     ev.preventDefault();
 
-    const data = new FormData();
-    data.append('author', author);
-    data.append('title', title);
-    data.append('summary', summary);
-    data.append('category', category);
-    data.append('content', content);
+    // Reset errors
+    setFieldError('');
+    setFileError('');
 
-    if (file) {
-      data.append('file', file); // Append file as is
+    // Check if all required fields are filled
+    if (!author || !title || !summary || !category || !content || !file) {
+      setFieldError('All fields are required');
+      return;
     }
 
-    // You might need to handle video if it's not just a string
-    data.append('video', video);
+    // Check if the content is not empty or just whitespace
+    const plainTextContent = content.trim();
+    if (plainTextContent === '' || plainTextContent === '<p><br></p>') {
+      setFieldError('Content cannot be empty');
+      return;
+    }
+
+    // Validate file type
+    const allowedFileTypes = /jpeg|jpg|png|gif/;
+    const fileType = file.type.split('/')[1];
+    if (!allowedFileTypes.test(fileType)) {
+      setFileError('Invalid file type. Only images are allowed (jpeg, jpg, png, gif)');
+      return;
+    }
+
+    const postData = {
+      author,
+      title,
+      summary,
+      category,
+      content,
+    };
+
+    const formData = new FormData();
+    formData.append('postData', JSON.stringify(postData));
+    formData.append('file', file);
+
+    // Hardcoded backend URL
+    const backendUrl = "http://localhost:4000/post";
 
     try {
-      const response = await fetch('http://localhost:4000/post', { // Updated URL
-        method: 'POST',
-        body: data,
+      const response = await axios.post(backendUrl, formData, {
       });
-
-      if (response.ok) {
+      if (response.data.postDocument) {
+        alert("Post Created Successfully");
         setRedirect(true);
       } else {
-        console.error('Failed to create post:', response.statusText);
+        setFieldError(response.data.error || 'Failed to create post');
       }
     } catch (error) {
       console.error('Error creating post:', error);
+      setFieldError('Failed to create post');
     }
-  }
+  };
 
   if (redirect) {
-    return <Navigate to="/" />;
+    navigate('/');
+    return null; // Prevent further rendering
   }
 
   return (
     <form onSubmit={createNewPost}>
-      <input 
-        type="text" 
-        placeholder="Author" 
-        value={author} 
-        onChange={ev => setAuthor(ev.target.value)} 
+      <input
+        type="text"
+        placeholder="Author"
+        value={author}
+        onChange={ev => setAuthor(ev.target.value)}
+        required
       />
-      <input 
-        type="text" 
-        placeholder="Title" 
-        value={title} 
-        onChange={ev => setTitle(ev.target.value)} 
+      <input
+        type="text"
+        placeholder="Title"
+        value={title}
+        onChange={ev => setTitle(ev.target.value)}
+        required
       />
-      <input 
-        type="text" 
-        placeholder="Summary" 
-        value={summary} 
-        onChange={ev => setSummary(ev.target.value)} 
+      <input
+        type="text"
+        placeholder="Summary"
+        value={summary}
+        onChange={ev => setSummary(ev.target.value)}
+        required
       />
-      <input 
-        type="file" 
-        onChange={ev => setFile(ev.target.files[0])} // Correctly handle file selection
+      <input
+        type="file"
+        onChange={ev => setFile(ev.target.files[0])}
+        required
       />
-      <input 
-        type="text" 
-        placeholder="Video URL" 
-        value={video} 
-        onChange={ev => setVideo(ev.target.value)} // Updated to handle text input for video URL
+      <input
+        type="text"
+        placeholder="Category"
+        value={category}
+        onChange={ev => setCategory(ev.target.value)}
+        required
       />
-      <input 
-        type="text" 
-        placeholder="Category" 
-        value={category} 
-        onChange={ev => setCategory(ev.target.value)} 
+      <ReactQuill
+        value={content}
+        modules={modules}
+        formats={formats}
+        onChange={newValue => {
+          setContent(newValue);
+          setFieldError('');
+          setFileError('');
+        }}
       />
-      <ReactQuill 
-        value={content} 
-        modules={modules} 
-        formats={formats} 
-        onChange={newValue => setContent(newValue)} 
-      />
-      <button 
-        className='submitpost' 
+      {fieldError && (
+        <Alert severity="error" style={{ marginTop: '10px' }}>
+          {fieldError}
+        </Alert>
+      )}
+      {fileError && (
+        <Alert severity="error" style={{ marginTop: '10px' }}>
+          {fileError}
+        </Alert>
+      )}
+      <button
+        className="submitpost"
         style={{ marginTop: '5px' }}
       >
         Create Post
