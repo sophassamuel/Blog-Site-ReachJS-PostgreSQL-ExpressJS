@@ -4,12 +4,13 @@ import { Link } from 'react-router-dom';
 import DeletePost from '../pages/DeleteBlog';
 
 const Post = ({ id, content, summary, author, createdAt, title, cover }) => {
-
+  const url = import.meta.env.VITE_BACKEND_URL;
+  
   return (
     <div className='Post'>
       <div className='image'>
         <Link to={`/post/${id}`}>
-          <img src={`http://localhost:4000/${cover}`} alt={title} />
+          <img src={`${url}/${cover}`} alt={title} />
         </Link>
       </div>
       <div className='text'>

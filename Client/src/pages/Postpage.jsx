@@ -6,12 +6,13 @@ import DeletePost from "./DeleteBlog";
 import EditPost from "../assets/Edit";
 
 
+
 export default function PostPage() {
     const { id } = useParams();
     const [postInfo, setPostInfo] = useState(null);
-
+    const url = import.meta.env.VITE_BACKEND_URL;
     useEffect(() => {
-        fetch(`http://localhost:4000/post/${id}`)
+        fetch(`${url}/post/${id}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -28,7 +29,7 @@ export default function PostPage() {
     return (
         <div className="Main-Div">
         <div className="post-image">
-            <img src={`http://localhost:4000/${postInfo.cover}`} alt={postInfo.title} />
+            <img src={`${url}/${postInfo.cover}`} alt={postInfo.title} />
         </div>
         <div className="text">
             <div className="info">

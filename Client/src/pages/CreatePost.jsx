@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import axios from 'axios';
 
+
+
 const modules = {
   toolbar: [
     [{ 'header': [1, 2, false] }],
@@ -75,7 +77,8 @@ export default function CreatePost() {
     formData.append('file', file);
 
     // Hardcoded backend URL
-    const backendUrl = "http://localhost:4000/post";
+    const url = import.meta.env.VITE_BACKEND_URL;
+    const backendUrl = `${url}/post`;
 
     try {
       const response = await axios.post(backendUrl, formData, {

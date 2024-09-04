@@ -2,12 +2,13 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+
 export default function DeletePost({ id }) {
     const navigate = useNavigate();
     const [redirect, setRedirect] = useState(false);
-
+    const url = import.meta.env.VITE_BACKEND_URL;
     const handleDelete = async () => {
-        const url = `http://localhost:4000/post/${id}`;
+        const url = `${url}/post/${id}`;
         try {
             const response = await axios.delete(url);
             console.log("Response:", response); // Log the entire response for debugging

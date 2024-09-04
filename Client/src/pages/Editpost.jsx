@@ -2,15 +2,17 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
+
 export default function EditPage() {
     const { id } = useParams(); // Assuming the ID is passed as a route parameter
     const navigate = useNavigate();
     const [post, setPost] = useState(null);
-
+    const backend = import.meta.env.VITE_BACKEND_URL;
+    ;
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const url = `http://localhost:4000/post/${id}`;
+                const url = `${backend}/post/${id}`;
                 const response = await axios.get(url);
                 if (response.status >= 200 && response.status < 300) {
                     setPost(response.data);
@@ -44,7 +46,7 @@ export default function EditPage() {
 
     const handleSaveChanges = async () => {
         try {
-            const url = `http://localhost:4000/post/${id}`;
+            const url = `${backend}/post/${id}`;
             await axios.put(url, post); // Update post data on the server
             alert("Post saved successfully");
             navigate(`/post/${id}`); // Redirect back to the post page
@@ -60,7 +62,7 @@ export default function EditPage() {
         <div className="modal">
             <h2>Edit Post</h2>
             <div className="image">
-                <img src={`http://localhost:4000/${post.cover}`} alt="Post Cover" />
+                <img src={`${backend}/${post.cover}`} alt="Post Cover" />
             </div>
             <input type="file" onChange={handleFileChange} required/>
             <input type="text" value={post.title} onChange={e => setPost({...post, title: e.target.value})} required/>
