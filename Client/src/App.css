@@ -136,23 +136,12 @@ div.Main-Div .text .info {
 div.Main-Div .text h2 {
   font-size: 3rem;
   font-family: var(--body-fonts);
-  font-weight: bold; /* Bold title */
+  font-weight: bold;
   color: var(--primary-color);
 }
 
 div.Main-Div .text p.summary {
   margin: 10px 0;
   line-height: 1.8rem;
-  font-size: 1rem; /* Normal text size for summary */
+  font-size: 1rem; 
 }
-
-/* Ensure responsiveness for smaller screens */
-@media (max-width: 768px) {
-  div.Main-Div {
-    /* Adjustments for small screens if needed */
-  }
-}
-
-
-
-
