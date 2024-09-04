@@ -62,13 +62,13 @@ export default function EditPage() {
             <div className="image">
                 <img src={`http://localhost:4000/${post.cover}`} alt="Post Cover" />
             </div>
-            <input type="file" onChange={handleFileChange} />
-            <input type="text" value={post.title} onChange={e => setPost({...post, title: e.target.value})}/>
-            <input type="text" value={post.summary} onChange={e => setPost({...post, summary: e.target.value})}/>
-            <input type="text" value={post.category} onChange={e => setPost({...post, category: e.target.value})}/>
-            <textarea value={post.content} onChange={e => setPost({ ...post, content: e.target.value })} />
+            <input type="file" onChange={handleFileChange} required/>
+            <input type="text" value={post.title} onChange={e => setPost({...post, title: e.target.value})} required/>
+            <input type="text" value={post.summary} onChange={e => setPost({...post, summary: e.target.value})} required/>
+            <input type="text" value={post.category} onChange={e => setPost({...post, category: e.target.value})} required/>
+            <textarea value={post.content} onChange={e => setPost({ ...post, content: e.target.value })} required/>
             <button onClick={handleSaveChanges} className="submitpost">Save Changes</button>
-            <button onClick={() => navigate(`/post/${id}`)} className="submitpost">Cancel</button> {/* Redirects back without saving */}
+            <button onClick={() => navigate(`/post/${id}`)} className="submitpost">Cancel</button> 
         </div>
     );
 }
